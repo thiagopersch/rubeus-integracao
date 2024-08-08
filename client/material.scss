@@ -1,0 +1,11 @@
+@import '~@angular/material/theming';
+@import './src/styles.scss';
+
+$primary: mat.define-palette($rb-primary);
+$accent: mat.define-palette($rb-accent, A200, A100, A400);
+
+@include mat-core();
+
+$my-theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($my-theme);
