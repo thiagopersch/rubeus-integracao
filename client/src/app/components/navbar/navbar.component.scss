@@ -1,0 +1,36 @@
+@import '../../../styles/theme.scss';
+
+.container-section-one-nav {
+  flex: 1 1 0%;
+  box-sizing: border-box;
+  place-content: center flex-start;
+  align-items: center;
+  flex-direction: row;
+  display: flex
+}
+
+.user-button {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: auto;
+}
+
+.button-text {
+  display: inline-flex;
+  vertical-align: middle;
+  color: $textColor;
+  font-weight: normal;
+}
+
+.button-icon {
+  display: inline-flex;
+  vertical-align: middle;
+  color: $greenMain;
+}
+
+.logout {
+  color: $redMain
+}

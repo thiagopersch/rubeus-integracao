@@ -1,0 +1,51 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    environment:
+      POSTGRES_HOST: localhost
+      POSTGRES_PORT: 5432
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: rubeusintegracao
+      POSTGRES_DATABASE: integracao
+
+    ports:
+      - '3333:3333'
+
+    networks:
+      - rubeusintegracao-network
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:latest
+    command: [ 'postgres', '-c', 'log_statement=all' ]
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: rubeusintegracao
+      POSTGRES_DB: integracao
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -U postgres' ]
+      interval: 10s
+      timeout: 15s
+      retries: 5
+
+    volumes:
+      - ./initdb:/docker-entrypoint-initdb.d
+
+    ports:
+      - '5432:5432'
+
+    networks:
+      - rubeusintegracao-network
+
+networks:
+  rubeusintegracao-network:
+    driver: bridge

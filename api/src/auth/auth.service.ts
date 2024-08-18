@@ -1,32 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../users/users.service';
+import { gusers } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private readonly prisma: PrismaService,
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    return this.usersService.validateUser(email, pass);
-  }
-
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.userId };
-    console.log(payload);
+  async login(user: gusers) {
+    const payload = { userId: user.id, login: user.login };
     return {
       access_token: this.jwtService.sign(payload),
+      user,
     };
   }
 
-  // Métodos de serialização e desserialização
-  async serializeUser(user: any, done: (err: any, user: any) => void) {
-    done(null, user);
-  }
-
-  async deserializeUser(user: any, done: (err: any, user: any) => void) {
-    done(null, user);
+  async validateUser(login: string, password: string): Promise<gusers> {
+    const user = await this.prisma.gusers.findUnique({ where: { login } });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return user;
+    }
+    return;
   }
 }

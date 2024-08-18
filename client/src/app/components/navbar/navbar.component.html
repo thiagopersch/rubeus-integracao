@@ -1,0 +1,29 @@
+<mat-toolbar>
+  <div class="container-section-one-nav">
+    <app-logo></app-logo>
+    @if(!isMobile) {
+      <span class="ps-nav-separator"></span>
+      <span class="text-default">Rubeus Integração</span>
+    }
+  </div>
+  <span class="spacer"></span>
+  @if (userName) {
+  <button class="user-button" mat-button [matMenuTriggerFor]="userMenu">
+    <span class="button-text text-default">{{ userName }}</span>
+    <span class="button-icon">
+      <mat-icon>arrow_drop_down</mat-icon>
+    </span>
+  </button>
+  } @else {
+    <button mat-raised-button color="primary" (click)="navigateToLogin()">Login</button>
+  }
+</mat-toolbar>
+
+<mat-menu #userMenu="matMenu">
+  <button mat-menu-item (click)="navigateToProfile()">
+    <span>Perfil</span>
+  </button>
+  <button class="logout" mat-menu-item (click)="logout()">
+    <span>Sair</span>
+  </button>
+</mat-menu>

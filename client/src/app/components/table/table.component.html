@@ -1,0 +1,25 @@
+<mat-card>
+  <div class="filter-container spacer items-aligns">
+    <mat-form-field>
+      <mat-label>Pesquisar</mat-label>
+      <input matInput (keyup)="applyFilter($event)">
+    </mat-form-field>
+    <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <mat-table [dataSource]="dataSourceMat" matSort class="mat-elevation-z2">
+    <ng-container *ngFor="let column of displayedColumns">
+      <ng-container [matColumnDef]="column">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ columnDefinitions[column] || column }}
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element[column] }}
+        </mat-cell>
+      </ng-container>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</mat-card>
